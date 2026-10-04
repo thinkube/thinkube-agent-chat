@@ -1,0 +1,96 @@
+{
+  "name": "thinkube-tandem-chat",
+  "displayName": "Thinkube Tandem Chat",
+  "description": "Tandem chats in VS Code's chat panel: Pi and opencode with Thinkube's models, MCP servers and operating rules",
+  "publisher": "thinkube",
+  "version": "0.1.0",
+  "license": "Apache-2.0",
+  "icon": "icon.png",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/thinkube/thinkube-tandem-chat"
+  },
+  "engines": {
+    "vscode": "^1.140.0"
+  },
+  "categories": [
+    "AI",
+    "Chat"
+  ],
+  "main": "./dist/extension.js",
+  "activationEvents": [],
+  "enabledApiProposals": [
+    "chatParticipantAdditions",
+    "chatParticipantPrivate",
+    "chatProvider",
+    "chatReferenceBinaryData",
+    "chatSessionsProvider"
+  ],
+  "contributes": {
+    "chatSessions": [
+      {
+        "type": "thinkube-pi",
+        "name": "tandem-pi",
+        "displayName": "Tandem (powered by Pi)",
+        "icon": "$(hubot)",
+        "description": "Tandem (powered by Pi) with Thinkube models, MCP servers and operating rules.",
+        "welcomeTitle": "Tandem (powered by Pi)",
+        "welcomeMessage": "With Thinkube models, MCP servers and operating rules",
+        "inputPlaceholder": "Ask Tandem",
+        "order": 1,
+        "requiresCustomModels": true,
+        "requiresCopilotSignIn": false,
+        "capabilities": {
+          "supportsFileAttachments": true,
+          "supportsImageAttachments": true
+        },
+        "canDelegate": true
+      },
+      {
+        "type": "thinkube-opencode",
+        "name": "tandem-opencode",
+        "displayName": "Tandem (powered by opencode)",
+        "icon": "$(hubot)",
+        "description": "Tandem (powered by opencode) with Thinkube models, MCP servers and operating rules.",
+        "welcomeTitle": "Tandem (powered by opencode)",
+        "welcomeMessage": "With Thinkube models, MCP servers and operating rules",
+        "inputPlaceholder": "Ask Tandem",
+        "order": 2,
+        "requiresCustomModels": true,
+        "requiresCopilotSignIn": false,
+        "capabilities": {
+          "supportsFileAttachments": true,
+          "supportsImageAttachments": true
+        },
+        "canDelegate": true
+      }
+    ],
+    "languageModelChatProviders": [
+      {
+        "vendor": "thinkube-pi",
+        "displayName": "Tandem (powered by Pi)",
+        "when": "false"
+      },
+      {
+        "vendor": "thinkube-opencode",
+        "displayName": "Tandem (powered by opencode)",
+        "when": "false"
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "deploy": "scripts/deploy.sh"
+  },
+  "dependencies": {
+    "@agentclientprotocol/sdk": "0.21.0",
+    "zod": "4.1.8"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.0",
+    "@types/vscode": "^1.100.0",
+    "@vscode/vsce": "^4.0.0",
+    "typescript": "^5.8.3"
+  }
+}

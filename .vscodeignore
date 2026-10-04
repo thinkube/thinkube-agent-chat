@@ -1,0 +1,13 @@
+.vscode/**
+src/**
+scripts/**
+.gitignore
+**/tsconfig.json
+**/*.map
+**/*.ts
+node_modules/.package-lock.json
+node_modules/@types/**
+node_modules/typescript/**
+*.vsix
+# pi -e loads this TypeScript file at run time.
+!pi/before-edit.ts
