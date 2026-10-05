@@ -8,6 +8,7 @@ Tandem chats in VS Code's chat panel, in Thinkube IDE: the coding agents Pi and 
 - **Pi** runs `pi --mode rpc` per chat. Pi's text streams into the chat, its tool calls show as progress, and its questions (such as the confirmation before a tool that changes the platform) are asked in the chat.
 - **opencode** runs `opencode acp` per workspace folder and talks to it over the Agent Client Protocol. Its permission requests ("Allow once", "Always allow", "Reject") are asked in the chat.
 - Pi's file edits are tracked as agent edits: they show as changes you can keep or undo. Pi waits before each edit until VS Code has recorded the file (`pi/before-edit.ts`, loaded only into the Pi processes of this extension).
+- At startup the chat panel shows a new Tandem (powered by Pi) chat in place of a chat of VS Code's own agent, which has no model in Thinkube IDE. The replaced chat stays in the Sessions list.
 - Each chat keeps its agent session: the next message continues it, also after a reload, and a reopened chat shows its earlier messages, read back from the agent.
 
 The agents use their own configuration (`~/.pi/agent/`, `~/.config/opencode/`), written by Thinkube's `roles/agent_clients`. VS Code needs a model to pass a request on; each agent brings one model entry, named after the agent, that only its own chats show. It does not choose the model the agent calls.

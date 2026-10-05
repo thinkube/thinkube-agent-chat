@@ -18,7 +18,9 @@
     "Chat"
   ],
   "main": "./dist/extension.js",
-  "activationEvents": [],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
   "enabledApiProposals": [
     "chatParticipantAdditions",
     "chatParticipantPrivate",
