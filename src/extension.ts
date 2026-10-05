@@ -18,16 +18,22 @@ function isLocalChat(resource: vscode.Uri): boolean {
  * replaced with a new Tandem (powered by Pi) chat when it is such a chat; the
  * replaced chat stays in the Sessions list.
  */
-function openTandemAtStartup(context: vscode.ExtensionContext, type: string): void {
+function openTandemAtStartup(context: vscode.ExtensionContext, log: vscode.LogOutputChannel, type: string): void {
 	const command = `workbench.action.chat.openNewSessionSidebar.${type}`;
 	const replace = (resource: vscode.Uri | undefined): void => {
-		if (resource && isLocalChat(resource)) {
-			vscode.commands.executeCommand(command).then(undefined, (error: unknown) => {
-				vscode.window.showErrorMessage(`Tandem could not open its chat in the chat panel (${command}): ${error instanceof Error ? error.message : String(error)}`);
-			});
+		if (!resource || !isLocalChat(resource)) {
+			log.info(`startup: the chat panel shows ${resource?.toString() ?? "no chat"}; kept`);
+			return;
 		}
+		log.info(`startup: the chat panel shows the Local chat ${resource.toString()}; running ${command}`);
+		vscode.commands.executeCommand(command).then(undefined, (error: unknown) => {
+			const message = `Tandem could not open its chat in the chat panel (${command}): ${error instanceof Error ? error.message : String(error)}`;
+			log.error(message);
+			vscode.window.showErrorMessage(message);
+		});
 	};
 	const current = vscode.window.activeChatPanelSessionResource;
+	log.info(`startup: activeChatPanelSessionResource at activation is ${current?.toString() ?? "undefined"}`);
 	if (current) {
 		replace(current);
 		return;
@@ -40,10 +46,12 @@ function openTandemAtStartup(context: vscode.ExtensionContext, type: string): vo
 }
 
 export function activate(context: vscode.ExtensionContext): void {
+	const log = vscode.window.createOutputChannel("Thinkube Tandem Chat", { log: true });
+	context.subscriptions.push(log);
 	const pi = createPi(context.extensionPath);
 	registerAgent(context, pi);
 	registerAgent(context, opencode);
-	openTandemAtStartup(context, pi.type);
+	openTandemAtStartup(context, log, pi.type);
 }
 
 export function deactivate(): void {}
